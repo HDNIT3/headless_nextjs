@@ -54,7 +54,6 @@ export async function POST(req: NextRequest) {
       };
     }
 
-    // Kiểm tra cấu hình mật khẩu ứng dụng Gmail
     if (!GMAIL_CONFIG.pass) {
       return NextResponse.json(
         {

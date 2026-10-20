@@ -2,51 +2,34 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { loginAction } from '@/service/auth.service';
 import { GoogleLoginButton } from './google-login-button';
 import { FacebookLoginButton } from './facebook-login-button';
+import { useAuthAction } from './use-auth-action';
 
 export function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get('redirect') || '/';
 
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { loading, error, setError, submit } = useAuthAction({
+    fallbackMessage: 'Có lỗi xảy ra trong quá trình đăng nhập.',
+  });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError(null);
-    setLoading(true);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    const formData = new FormData(e.currentTarget);
     formData.append('redirect', redirectUrl);
     formData.append('remember', rememberMe ? 'true' : 'false');
 
-    try {
-      const result = await loginAction(formData);
-
-      if (!result.success) {
-        setError(result.message || 'Đăng nhập không thành công.');
-        setLoading(false);
-        return;
-      }
-
-      // Đăng nhập thành công, điều hướng về trang mong muốn
-      router.push(result.redirectTo || redirectUrl);
-      router.refresh();
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Có lỗi xảy ra trong quá trình đăng nhập.');
-      setLoading(false);
-    }
+    await submit(() => loginAction(formData));
   }
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 sm:p-10 transition-all">
+    <div className="w-full max-w-md mx-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-6 sm:p-10 transition-all">
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#0f5c2e]/10 text-[#0f5c2e] mb-4 shadow-xs">
           <svg
@@ -133,8 +116,8 @@ export function LoginForm() {
           </div>
         </div>
 
-        {/* Ghi nhớ đăng nhập & Quên mật khẩu */}
-        <div className="flex items-center justify-between pt-1">
+        {/* Ghi nhớ đăng nhập (chưa có luồng "Quên mật khẩu" nên chưa hiển thị link) */}
+        <div className="flex items-center pt-1">
           <label className="flex items-center gap-2 text-sm text-gray-600 select-none cursor-pointer">
             <input
               type="checkbox"
@@ -145,12 +128,6 @@ export function LoginForm() {
             />
             <span>Ghi nhớ đăng nhập</span>
           </label>
-          <Link
-            href="/forgot-password"
-            className="text-sm font-medium text-[#0f5c2e] hover:text-[#f26522] transition-colors"
-          >
-            Quên mật khẩu?
-          </Link>
         </div>
 
         <button

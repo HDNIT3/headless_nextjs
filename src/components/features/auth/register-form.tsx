@@ -1,49 +1,31 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { registerAction } from '@/service/auth.service';
 import { GoogleLoginButton } from './google-login-button';
 import { FacebookLoginButton } from './facebook-login-button';
+import { useAuthAction } from './use-auth-action';
 
 export function RegisterForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get('redirect') || '/';
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { loading, error, setError, submit } = useAuthAction({
+    fallbackMessage: 'Có lỗi xảy ra trong quá trình đăng ký.',
+  });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError(null);
-    setLoading(true);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    const formData = new FormData(e.currentTarget);
     formData.append('redirect', redirectUrl);
 
-    try {
-      const result = await registerAction(formData);
-
-      if (!result.success) {
-        setError(result.message || 'Đăng ký không thành công.');
-        setLoading(false);
-        return;
-      }
-
-      // Đăng ký thành công, tự động chuyển về trang đích
-      router.push(result.redirectTo || redirectUrl);
-      router.refresh();
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Có lỗi xảy ra trong quá trình đăng ký.');
-      setLoading(false);
-    }
+    await submit(() => registerAction(formData));
   }
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-8 sm:p-10">
+    <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10">
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-orange-50 text-[#f15a24] mb-4">
           <svg

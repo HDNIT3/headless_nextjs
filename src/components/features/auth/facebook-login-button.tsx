@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { facebookLoginAction } from '@/service/auth.service';
+import { useAuthAction } from './use-auth-action';
 
 declare global {
   interface Window {
@@ -26,18 +26,16 @@ interface FacebookLoginButtonProps {
 }
 
 export function FacebookLoginButton({ redirectUrl = '/', onError }: FacebookLoginButtonProps) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [sdkReady, setSdkReady] = useState(false);
+  const { loading, setLoading, submit } = useAuthAction({
+    fallbackMessage: 'Lỗi kết nối máy chủ khi đăng nhập Facebook.',
+    onError,
+  });
+  // Khởi tạo từ window để trường hợp SDK đã tải sẵn (điều hướng client-side quay lại trang) không bị "kẹt" disabled
+  const [sdkReady, setSdkReady] = useState(() => typeof window !== 'undefined' && Boolean(window.FB));
   const appId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || '';
 
   useEffect(() => {
-    if (!appId) return;
-
-    if (window.FB) {
-      setSdkReady(true);
-      return;
-    }
+    if (!appId || window.FB) return;
 
     window.fbAsyncInit = function () {
       window.FB?.init({
@@ -49,14 +47,19 @@ export function FacebookLoginButton({ redirectUrl = '/', onError }: FacebookLogi
       setSdkReady(true);
     };
 
-    if (!document.getElementById('facebook-jssdk')) {
-      const js = document.createElement('script');
-      js.id = 'facebook-jssdk';
-      js.src = 'https://connect.facebook.net/vi_VN/sdk.js';
-      js.async = true;
-      js.defer = true;
-      document.body.appendChild(js);
+    const existingScript = document.getElementById('facebook-jssdk');
+    if (existingScript) {
+      existingScript.addEventListener('load', () => setSdkReady(true));
+      return;
     }
+
+    const js = document.createElement('script');
+    js.id = 'facebook-jssdk';
+    js.src = 'https://connect.facebook.net/vi_VN/sdk.js';
+    js.async = true;
+    js.defer = true;
+    js.addEventListener('load', () => setSdkReady(true));
+    document.body.appendChild(js);
   }, [appId]);
 
   if (!appId) {
@@ -73,26 +76,14 @@ export function FacebookLoginButton({ redirectUrl = '/', onError }: FacebookLogi
 
     window.FB.login(
       (response) => {
-        if (response.authResponse?.accessToken) {
-          const token = response.authResponse.accessToken;
-          facebookLoginAction(token, redirectUrl)
-            .then((result) => {
-              if (result.success) {
-                router.push(result.redirectTo || redirectUrl);
-                router.refresh();
-              } else {
-                setLoading(false);
-                onError?.(result.message || 'Đăng nhập Facebook thất bại.');
-              }
-            })
-            .catch((err: unknown) => {
-              setLoading(false);
-              onError?.(err instanceof Error ? err.message : 'Lỗi kết nối máy chủ khi đăng nhập Facebook.');
-            });
-        } else {
-          setLoading(false);
+        const token = response.authResponse?.accessToken;
+        if (!token) {
           // Người dùng hủy popup hoặc không đồng ý cấp quyền
+          setLoading(false);
+          return;
         }
+
+        void submit(() => facebookLoginAction(token, redirectUrl));
       },
       { scope: 'public_profile,email' }
     );
