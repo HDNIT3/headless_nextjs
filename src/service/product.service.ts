@@ -1,16 +1,19 @@
+import { cache } from "react";
 import { fetchGraphQL } from "@/lib/wordpress/graphql-client";
 import {
   GET_PRODUCTS_QUERY,
+  GET_PRODUCT_DETAIL_QUERY,
   GET_PRODUCT_ATTR_KICH_THUOCS_QUERY,
   GET_PRODUCT_ATTR_MAU_SACS_QUERY,
 } from "@/lib/wordpress/queries/products.graphql";
 import {
   GetProductsResponse,
   GetProductsVariables,
+  GetProductDetailResponse,
+  ProductDetailNode,
   GetProductAttrKichThuocsResponse,
   GetProductAttrMauSacsResponse,
   AttributeNode,
-  ProductsConnection,
 } from "@/types/product";
 
 export async function getProducts(
@@ -38,6 +41,18 @@ export async function getProducts(
     },
   };
 }
+
+export const getProductDetail = cache(
+  async (slug: string): Promise<ProductDetailNode | null> => {
+    const data = await fetchGraphQL<GetProductDetailResponse>(
+      GET_PRODUCT_DETAIL_QUERY,
+      { slug },
+      { revalidate: 60, tags: ['products', `product-${slug}`] }
+    );
+
+    return data?.product ?? null;
+  }
+);
 
 export async function getProductAttrKichThuocs(): Promise<AttributeNode[]> {
   const data = await fetchGraphQL<GetProductAttrKichThuocsResponse>(

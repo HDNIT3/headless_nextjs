@@ -15,3 +15,70 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+@keyframes gallery-image-in {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.gallery-image-in {
+  animation: gallery-image-in 450ms ease-out;
+}
+
+@keyframes gallery-thumb-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gallery-thumb-in {
+  animation: gallery-thumb-in 400ms ease-out both;
+}
+
+@keyframes lightbox-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lightbox-fade-in {
+  animation: lightbox-fade-in 200ms ease-out;
+}
+
+@keyframes lightbox-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lightbox-zoom-in {
+  animation: lightbox-zoom-in 250ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-image-in,
+  .gallery-thumb-in,
+  .lightbox-fade-in,
+  .lightbox-zoom-in {
+    animation: none;
+  }
+}

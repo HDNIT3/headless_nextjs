@@ -1,26 +1,59 @@
 import { PageInfo } from './common';
 
+export interface ProductAttributeNode {
+  name: string;
+  options: string[];
+}
+
 export interface ProductNode {
   id: string;
-  title: string;
+  databaseId?: number;
+  name: string;
   slug: string;
-  featuredImage?: {
-    node?: {
-      sourceUrl: string;
-    } | null;
+  image?: {
+    sourceUrl: string;
+    altText?: string | null;
   } | null;
   thongtinsanpham?: {
-    luTMua?: number | null;
+    luotmua?: number | null;
   } | null;
   productCategories?: {
     nodes: { name: string; slug?: string }[];
   } | null;
-  productAttrMauSacs?: {
-    nodes: { name: string }[];
+  attributes?: {
+    nodes: ProductAttributeNode[];
   } | null;
-  productAttrKichThuocs?: {
-    nodes: { name: string }[];
+}
+
+export interface ProductGalleryImage {
+  id: string;
+  sourceUrl: string;
+  altText?: string | null;
+}
+
+export interface ProductDetailThongTinSanPham {
+  luTXem?: number | null;
+  luotmua?: number | null;
+  chatlieu?: string | null;
+  doday?: string | null;
+  taitrong?: string | null;
+  congdung?: string | null;
+  ungdungchitiet?: string | null;
+  visaonensudung?: string | null;
+}
+
+export interface ProductDetailNode extends ProductNode {
+  galleryImages?: {
+    nodes: ProductGalleryImage[];
   } | null;
+  productCategories?: {
+    nodes: { id: string; name: string; slug: string }[];
+  } | null;
+  thongtinsanpham?: ProductDetailThongTinSanPham | null;
+}
+
+export interface GetProductDetailResponse {
+  product: ProductDetailNode | null;
 }
 
 export interface ProductsConnection {

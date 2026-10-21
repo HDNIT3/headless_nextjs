@@ -13,30 +13,32 @@ export const GET_PRODUCTS_QUERY = `
     ) {
       nodes {
         id
-        title
+        databaseId
+        name
         slug
-        featuredImage {
-          node {
-            sourceUrl
+        image {
+          sourceUrl
+          altText
+        }
+
+        ... on WithAcfThongtinsanpham {
+          thongtinsanpham {
+            luotmua
           }
         }
-        thongtinsanpham {
-          luTMua
-        }
-        productCategories {
-          nodes {
-            name
-            slug
+
+        ... on Product {
+          productCategories {
+            nodes {
+              name
+              slug
+            }
           }
-        }
-        productAttrMauSacs {
-          nodes {
-            name
-          }
-        }
-        productAttrKichThuocs {
-          nodes {
-            name
+          attributes {
+            nodes {
+              name
+              options
+            }
           }
         }
       }
@@ -45,6 +47,57 @@ export const GET_PRODUCTS_QUERY = `
         hasPreviousPage
         endCursor
         startCursor
+      }
+    }
+  }
+`;
+
+export const GET_PRODUCT_DETAIL_QUERY = `
+  query GetProductDetail($slug: ID!) {
+    product(id: $slug, idType: SLUG) {
+      id
+      databaseId
+      name
+      slug
+      image {
+        sourceUrl
+        altText
+      }
+
+      ... on Product {
+        galleryImages {
+          nodes {
+            id
+            sourceUrl
+            altText
+          }
+        }
+        productCategories {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+        attributes {
+          nodes {
+            name
+            options
+          }
+        }
+      }
+
+      ... on WithAcfThongtinsanpham {
+        thongtinsanpham {
+          luTXem
+          luotmua
+          chatlieu
+          doday
+          taitrong
+          congdung
+          ungdungchitiet
+          visaonensudung
+        }
       }
     }
   }

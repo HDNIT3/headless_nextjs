@@ -7,8 +7,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const imageUrl = product.featuredImage?.node?.sourceUrl;
-  const luotMua = product.thongtinsanpham?.luTMua ?? 0;
+  const imageUrl = product.image?.sourceUrl;
+  const luotMua = product.thongtinsanpham?.luotmua ?? 0;
 
   return (
     <article className="group bg-white rounded-xl border border-gray-100 shadow-[0_1px_6px_rgba(0,0,0,0.04)] hover:shadow-[0_6px_20px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 transition-all duration-300 p-2.5 flex flex-col h-full">
@@ -19,7 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
       >
         <ImageWithFallback
           src={imageUrl}
-          alt={product.title}
+          alt={product.image?.altText || product.name}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -31,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Title */}
         <Link href={`/san-pham/${product.slug}`}>
           <h3 className="text-gray-800 font-semibold text-[13px] sm:text-[14px] leading-[1.4] line-clamp-1 hover:text-[#f15a24] transition-colors">
-            {product.title}
+            {product.name}
           </h3>
         </Link>
 

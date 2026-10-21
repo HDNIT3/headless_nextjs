@@ -18,6 +18,38 @@ export const metadata: Metadata = {
 
 const ITEMS_PER_PAGE = 12;
 
+const KICH_THUOC_KEYWORDS = ['kich thuoc', 'kich co', 'size'];
+const MAU_SAC_KEYWORDS = ['mau sac', 'mau', 'color'];
+
+function normalize(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[-_]+/g, ' ')
+    .trim();
+}
+
+function matchesAttributes(
+  product: ProductNode,
+  selected: string[],
+  keywords: string[]
+): boolean {
+  if (selected.length === 0) return true;
+
+  const selectedSet = new Set(selected.map(normalize));
+  const attributes = product.attributes?.nodes ?? [];
+  const scoped = attributes.filter((attr) =>
+    keywords.some((keyword) => normalize(attr.name).includes(keyword))
+  );
+  // Fall back to every attribute when the store doesn't name them as expected.
+  const candidates = scoped.length > 0 ? scoped : attributes;
+
+  return candidates.some((attr) =>
+    (attr.options ?? []).some((option) => selectedSet.has(normalize(option)))
+  );
+}
+
 function getPageCursor(page: number, perPage: number): string | null {
   if (page <= 1) return null;
   const offset = (page - 1) * perPage - 1;
@@ -85,12 +117,12 @@ export default async function SanPhamPage({ searchParams }: SanPhamPageProps) {
   }
   if (selectedKichThuocs.length > 0) {
     filteredProducts = filteredProducts.filter((p) =>
-      p.productAttrKichThuocs?.nodes?.some((k) => selectedKichThuocs.includes(k.name))
+      matchesAttributes(p, selectedKichThuocs, KICH_THUOC_KEYWORDS)
     );
   }
   if (selectedMauSacs.length > 0) {
     filteredProducts = filteredProducts.filter((p) =>
-      p.productAttrMauSacs?.nodes?.some((m) => selectedMauSacs.includes(m.name))
+      matchesAttributes(p, selectedMauSacs, MAU_SAC_KEYWORDS)
     );
   }
 
