@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { ViewTransition } from 'react';
 import { ProductCard } from '@/components/common/product-card';
 import { ProductPagination } from './product-pagination';
 import type { ProductNode } from '@/types/product';
@@ -26,9 +28,9 @@ export function ProductListSection({
       {/* Breadcrumb */}
       <div className="mb-1">
         <nav className="text-[13px] text-gray-500" aria-label="Breadcrumb">
-          <a href="/san-pham" className="text-[#0c5c36] hover:underline font-medium">
+          <Link href="/san-pham" className="text-[#0c5c36] hover:underline font-medium">
             Sản phẩm
-          </a>
+          </Link>
           {activeCategory && (
             <>
               <span className="mx-1.5 text-gray-400">/</span>
@@ -47,7 +49,9 @@ export function ProductListSection({
       {products.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
-            <ProductCard key={product.id || product.slug} product={product} />
+            <ViewTransition key={product.id || product.slug}>
+              <ProductCard product={product} />
+            </ViewTransition>
           ))}
         </div>
       ) : (
@@ -69,7 +73,6 @@ export function ProductListSection({
         currentPage={currentPage}
         totalPages={totalPages}
         hasNextPage={pageInfo.hasNextPage}
-        hasPreviousPage={pageInfo.hasPreviousPage || false}
         endCursor={pageInfo.endCursor}
       />
     </div>

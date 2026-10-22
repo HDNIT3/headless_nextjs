@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 interface ContactDetailItem {
   label: string;
   content: React.ReactNode;

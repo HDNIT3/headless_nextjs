@@ -1,12 +1,12 @@
 'use client';
 
+import { startTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface ProductPaginationProps {
   currentPage: number;
   totalPages: number;
   hasNextPage: boolean;
-  hasPreviousPage: boolean;
   endCursor?: string | null;
 }
 
@@ -14,7 +14,6 @@ export function ProductPagination({
   currentPage,
   totalPages,
   hasNextPage,
-  hasPreviousPage,
   endCursor,
 }: ProductPaginationProps) {
   const router = useRouter();
@@ -35,7 +34,9 @@ export function ProductPagination({
       params.delete('after');
     }
     const query = params.toString();
-    router.push(`/san-pham${query ? `?${query}` : ''}`);
+    startTransition(() => {
+      router.push(`/san-pham${query ? `?${query}` : ''}`);
+    });
   };
 
   // Generate page numbers to show

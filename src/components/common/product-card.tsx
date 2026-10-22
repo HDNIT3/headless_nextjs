@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ViewTransition } from 'react';
 import { ImageWithFallback } from '@/components/common/image-with-fallback';
 import type { ProductNode } from '@/types/product';
 
@@ -15,21 +16,28 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Product Image */}
       <Link
         href={`/san-pham/${product.slug}`}
+        transitionTypes={['nav-forward']}
         className="block relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-gray-50"
       >
-        <ImageWithFallback
-          src={imageUrl}
-          alt={product.image?.altText || product.name}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        <ViewTransition
+          name={`product-image-${product.slug}`}
+          share="morph"
+          default="none"
+        >
+          <ImageWithFallback
+            src={imageUrl}
+            alt={product.image?.altText || product.name}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </ViewTransition>
       </Link>
 
       {/* Product Info */}
       <div className="flex flex-col flex-1 pt-2.5 px-0.5 pb-0.5">
         {/* Title */}
-        <Link href={`/san-pham/${product.slug}`}>
+        <Link href={`/san-pham/${product.slug}`} transitionTypes={['nav-forward']}>
           <h3 className="text-gray-800 font-semibold text-[13px] sm:text-[14px] leading-[1.4] line-clamp-1 hover:text-[#f15a24] transition-colors">
             {product.name}
           </h3>

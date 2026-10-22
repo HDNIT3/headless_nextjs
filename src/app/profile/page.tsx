@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
+import { PageTransition } from '@/components/common/page-transition';
 import { getCurrentUser, logoutAction } from '@/service/auth.service';
 
 export const metadata: Metadata = {
@@ -26,7 +28,8 @@ export default async function ProfilePage() {
     : 'Mới đăng nhập';
 
   return (
-    <div className="w-full bg-[#fafbfc] min-h-[calc(100vh-80px)] py-12">
+    <PageTransition>
+      <div className="w-full bg-[#fafbfc] min-h-[calc(100vh-80px)] py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mb-8">
@@ -45,7 +48,14 @@ export default async function ProfilePage() {
               <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-1 shadow-md border border-gray-100 overflow-hidden">
                 <div className="w-full h-full rounded-xl overflow-hidden bg-emerald-50 text-[#0c5c36] flex items-center justify-center font-bold text-3xl sm:text-4xl">
                   {user.avatarUrl ? (
-                    <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
+                    <Image
+                      src={user.avatarUrl}
+                      alt={user.name}
+                      width={112}
+                      height={112}
+                      unoptimized
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     user.name ? user.name.charAt(0).toUpperCase() : 'U'
                   )}
@@ -164,5 +174,6 @@ export default async function ProfilePage() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }

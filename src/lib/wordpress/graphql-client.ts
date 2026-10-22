@@ -3,15 +3,37 @@ const WP_GRAPHQL_URL =
   process.env.NEXT_PUBLIC_WORDPRESS_API_URL ||
   'https://demo.wpgraphql.com/graphql';
 
-export async function fetchGraphQL<T = any>(
+interface GraphQLRequestOptions {
+  /** `false` opts out of the Next.js data cache; a number sets the revalidation window. */
+  revalidate?: number | false;
+  tags?: string[];
+}
+
+interface GraphQLResponse<T> {
+  data?: T;
+  errors?: unknown;
+}
+
+/**
+ * Small WPGraphQL client used by the service layer.
+ *
+ * Requests are cached by Next.js (default: 60s) and can be tagged for
+ * on-demand revalidation. Pass `revalidate: false` for data that must always
+ * be fresh.
+ */
+export async function fetchGraphQL<T>(
   query: string,
-  variables: Record<string, any> = {},
-  options: {
-    revalidate?: number | false;
-    tags?: string[];  
-  } = {}
+  variables: object = {},
+  options: GraphQLRequestOptions = {}
 ): Promise<T | null> {
-  const { tags } = options;
+  const { revalidate = 60, tags } = options;
+
+  const cacheOptions: RequestInit & {
+    next?: { revalidate?: number; tags?: string[] };
+  } =
+    revalidate === false
+      ? { cache: 'no-store' }
+      : { next: { revalidate, tags } };
 
   try {
     const res = await fetch(WP_GRAPHQL_URL, {
@@ -23,7 +45,7 @@ export async function fetchGraphQL<T = any>(
         query,
         variables,
       }),
-      cache: 'no-store',
+      ...cacheOptions,
     });
 
     if (!res.ok) {
@@ -31,17 +53,16 @@ export async function fetchGraphQL<T = any>(
       return null;
     }
 
-    const json = await res.json();
+    const json = (await res.json()) as GraphQLResponse<T>;
 
     if (json.errors) {
       console.warn('[WPGraphQL] Query Errors:', json.errors);
       return null;
     }
 
-    return json.data as T;
+    return json.data ?? null;
   } catch (error) {
     console.warn('[WPGraphQL] Connection failed:', error);
     return null;
   }
 }
-

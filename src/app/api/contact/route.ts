@@ -79,13 +79,13 @@ export async function POST(req: NextRequest) {
       message:
         'Gửi yêu cầu báo giá thành công! Chúng tôi sẽ liên hệ lại với bạn sớm nhất.',
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Lỗi khi xử lý form liên hệ:', error);
     return NextResponse.json(
       {
         success: false,
         error:
-          error?.message ||
+          (error instanceof Error && error.message) ||
           'Có lỗi xảy ra khi gửi yêu cầu. Vui lòng kiểm tra lại thông tin hoặc thử lại sau.',
       },
       { status: 500 }

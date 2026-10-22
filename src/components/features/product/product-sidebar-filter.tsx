@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, startTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { ProductCategoryNode } from '@/types/category';
 import type { AttributeNode } from '@/types/product';
@@ -30,14 +30,6 @@ export function ProductSidebarFilter({
   const [selectedKichThuocs, setSelectedKichThuocs] = useState<string[]>(currentKichThuocs);
   const [selectedMauSacs, setSelectedMauSacs] = useState<string[]>(currentMauSacs);
 
-  // Sync state when URL searchParams change
-  useEffect(() => {
-    setSearch(searchParams.get('search') || '');
-    setSelectedCategories(searchParams.getAll('danhmuc'));
-    setSelectedKichThuocs(searchParams.getAll('kichthuoc'));
-    setSelectedMauSacs(searchParams.getAll('mausac'));
-  }, [searchParams]);
-
   const toggleItem = (list: string[], item: string): string[] => {
     return list.includes(item) ? list.filter((i) => i !== item) : [...list, item];
   };
@@ -50,7 +42,9 @@ export function ProductSidebarFilter({
     selectedMauSacs.forEach((m) => params.append('mausac', m));
 
     const query = params.toString();
-    router.push(`/san-pham${query ? `?${query}` : ''}`);
+    startTransition(() => {
+      router.push(`/san-pham${query ? `?${query}` : ''}`);
+    });
   }, [search, selectedCategories, selectedKichThuocs, selectedMauSacs, router]);
 
   const clearFilters = useCallback(() => {
@@ -58,7 +52,9 @@ export function ProductSidebarFilter({
     setSelectedCategories([]);
     setSelectedKichThuocs([]);
     setSelectedMauSacs([]);
-    router.push('/san-pham');
+    startTransition(() => {
+      router.push('/san-pham');
+    });
   }, [router]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {

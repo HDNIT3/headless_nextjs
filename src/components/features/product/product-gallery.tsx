@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ViewTransition } from 'react';
 import { ImageWithFallback } from '@/components/common/image-with-fallback';
 import type { ProductGalleryImage, ProductNode } from '@/types/product';
 
@@ -80,19 +80,25 @@ export function ProductGallery({ product }: ProductGalleryProps) {
         {/* Khung ảnh chính */}
         <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
           {product.image?.sourceUrl ? (
-            <div
-              key={product.image.sourceUrl}
-              className="gallery-image-in absolute inset-0"
+            <ViewTransition
+              name={`product-image-${product.slug}`}
+              share="morph"
+              default="none"
             >
-              <ImageWithFallback
-                src={product.image.sourceUrl}
-                alt={product.image.altText || product.name}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
+              <div
+                key={product.image.sourceUrl}
+                className="gallery-image-in absolute inset-0"
+              >
+                <ImageWithFallback
+                  src={product.image.sourceUrl}
+                  alt={product.image.altText || product.name}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+            </ViewTransition>
           ) : (
             <ImageWithFallback
               alt={product.name}

@@ -42,11 +42,6 @@ export function NavMenu({ categories = [] }: NavMenuProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Close dropdown on navigation
-  useEffect(() => {
-    setIsDropdownOpen(false);
-  }, [pathname, currentDanhmuc]);
-
   return (
     <nav className="hidden lg:flex items-center gap-7">
       {MAIN_NAV_ITEMS.map((item) => {

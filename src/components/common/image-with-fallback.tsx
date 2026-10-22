@@ -15,19 +15,19 @@ export function ImageWithFallback({
   className,
   ...rest
 }: ImageWithFallbackProps) {
-  const [imgSrc, setImgSrc] = useState<string>(src || fallbackSrc);
-  const [hasError, setHasError] = useState(false);
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const resolvedSrc = !src || src === failedSrc ? fallbackSrc : src;
 
   return (
     <Image
       {...rest}
-      src={hasError || !imgSrc ? fallbackSrc : imgSrc}
+      src={resolvedSrc}
       alt={alt || 'Hình ảnh'}
       className={className}
       onError={() => {
-        setHasError(true);
+        setFailedSrc(src ?? null);
       }}
-      unoptimized={typeof imgSrc === 'string' && imgSrc.startsWith('http')}
+      unoptimized={resolvedSrc.startsWith('http')}
     />
   );
 }

@@ -16,7 +16,7 @@ export function HeroBanner({
       {/* Background Banner Image */}
       <div className="relative w-full h-[260px] sm:h-[320px] md:h-[380px] lg:h-[420px]">
         <Image
-          src="/images/new_banner.png"
+          src="/images/post/new_banner.png"
           alt="Bao Bì Đức Trọng Banner"
           fill
           priority

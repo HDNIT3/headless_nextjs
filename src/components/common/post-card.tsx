@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ViewTransition } from 'react';
 import { ImageWithFallback } from './image-with-fallback';
 import { cleanHtml } from '@/lib/utils/clean-html';
 import type { PostNode } from '@/types/post';
@@ -17,20 +18,27 @@ export function PostCard({ post }: PostCardProps) {
       {/* Featured Image */}
       <Link
         href={`/blog/${post.slug}`}
+        transitionTypes={['nav-forward']}
         className="block relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-100"
       >
-        <ImageWithFallback
-          src={imageUrl}
-          alt={imageAlt}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        <ViewTransition
+          name={`post-image-${post.slug}`}
+          share="morph"
+          default="none"
+        >
+          <ImageWithFallback
+            src={imageUrl}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </ViewTransition>
       </Link>
 
       {/* Body Content */}
       <div className="flex flex-col flex-1 pt-3.5 px-1 pb-1">
-        <Link href={`/blog/${post.slug}`}>
+        <Link href={`/blog/${post.slug}`} transitionTypes={['nav-forward']}>
           <h3 className="text-[#0c5c36] font-bold text-[15px] sm:text-[16px] leading-[1.35] line-clamp-2 hover:text-[#f15a24] transition-colors mb-2">
             {post.title}
           </h3>
@@ -46,6 +54,7 @@ export function PostCard({ post }: PostCardProps) {
         <div className="mt-auto pt-2 flex items-center justify-between border-t border-transparent group-hover:border-gray-50 transition-colors">
           <Link
             href={`/blog/${post.slug}`}
+            transitionTypes={['nav-forward']}
             className="text-[13px] font-medium text-[#0c5c36] group-hover:text-[#f15a24] transition-colors"
           >
             Xem chi tiết
@@ -53,6 +62,7 @@ export function PostCard({ post }: PostCardProps) {
 
           <Link
             href={`/blog/${post.slug}`}
+            transitionTypes={['nav-forward']}
             className="text-[#0c5c36] group-hover:text-[#f15a24] group-hover:translate-x-1.5 transition-all duration-300"
             aria-label={`Xem chi tiết bài viết ${post.title}`}
           >

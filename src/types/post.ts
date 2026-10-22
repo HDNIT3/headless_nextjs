@@ -23,3 +23,7 @@ export interface GetNewsListVariables {
   first?: number;
   after?: string | null;
 }
+
+export interface GetPostDetailResponse {
+  post: PostNode | null;
+}

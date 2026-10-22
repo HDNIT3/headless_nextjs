@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #1e293b;
+
+  /* View transition timing */
+  --vt-exit: 150ms;
+  --vt-enter: 210ms;
+  --vt-move: 400ms;
 }
 
 @theme inline {
@@ -74,11 +79,114 @@ body {
   animation: lightbox-zoom-in 250ms ease-out;
 }
 
+/* ------------------------------------------------------------------ */
+/* View transitions                                                    */
+/* ------------------------------------------------------------------ */
+
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vt-slide {
+  from {
+    translate: var(--slide-offset);
+  }
+  to {
+    translate: 0;
+  }
+}
+
+@keyframes vt-via-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+
+/* Cross-fade used for lateral / untyped navigation (top nav, browser back). */
+::view-transition-old(.page-fade-out) {
+  animation: var(--vt-exit) ease-in both vt-fade reverse;
+}
+::view-transition-new(.page-fade-in) {
+  animation: var(--vt-enter) ease-out var(--vt-exit) both vt-fade;
+}
+
+/* Directional slides for hierarchical navigation (list -> detail). */
+::view-transition-old(.nav-forward) {
+  --slide-offset: -60px;
+  animation:
+    var(--vt-exit) ease-in both vt-fade reverse,
+    var(--vt-move) ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: 60px;
+  animation:
+    var(--vt-enter) ease-out var(--vt-exit) both vt-fade,
+    var(--vt-move) ease-in-out both vt-slide;
+}
+
+::view-transition-old(.nav-back) {
+  --slide-offset: 60px;
+  animation:
+    var(--vt-exit) ease-in both vt-fade reverse,
+    var(--vt-move) ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: -60px;
+  animation:
+    var(--vt-enter) ease-out var(--vt-exit) both vt-fade,
+    var(--vt-move) ease-in-out both vt-slide;
+}
+
+/* Shared element morph (product/post thumbnails -> detail images). */
+::view-transition-group(.morph) {
+  animation-duration: var(--vt-move);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: vt-via-blur;
+}
+
+/* Keep the root live: page content animates through its own named group. */
+::view-transition-old(root) {
+  display: none;
+}
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* Keep the site header anchored while page content moves. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+/* Let clicks reach the live page while snapshots are still animating. */
+::view-transition {
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gallery-image-in,
   .gallery-thumb-in,
   .lightbox-fade-in,
   .lightbox-zoom-in {
     animation: none;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }

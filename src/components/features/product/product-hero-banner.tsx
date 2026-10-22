@@ -5,7 +5,7 @@ export function ProductHeroBanner() {
     <section className="relative w-full overflow-hidden bg-[#124d27]">
       <div className="relative w-full h-[220px] sm:h-[280px] md:h-[340px] lg:h-[380px]">
         <Image
-          src="/images/new_banner.png"
+          src="/images/product/product_banner.png"
           alt="Sản phẩm Bao Bì Đức Trọng"
           fill
           priority
