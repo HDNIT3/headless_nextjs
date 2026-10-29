@@ -11,10 +11,6 @@ interface ProductResultsProps {
   filters: ProductFilters;
 }
 
-/**
- * Async product grid. It is rendered inside Suspense by the page so the hero
- * and filter shell can paint before WPGraphQL responds.
- */
 export async function ProductResults({ filters }: ProductResultsProps) {
   const productsData = await getProducts({
     first: ITEMS_PER_PAGE,

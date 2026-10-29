@@ -17,7 +17,7 @@ export function MobileNav({ categories = [] }: MobileNavProps) {
 
   return (
     <div className="lg:hidden">
-      {/* Mobile Toggle Button */}
+      {}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 text-gray-700 hover:text-[#0c5c36] focus:outline-none"
@@ -47,7 +47,7 @@ export function MobileNav({ categories = [] }: MobileNavProps) {
         </svg>
       </button>
 
-      {/* Drawer Overlay */}
+      {}
       {isOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs"
@@ -55,7 +55,7 @@ export function MobileNav({ categories = [] }: MobileNavProps) {
         />
       )}
 
-      {/* Mobile Drawer */}
+      {}
       <div
         className={`fixed top-0 right-0 z-50 w-72 h-full bg-white shadow-2xl p-6 transition-transform duration-300 ease-in-out overflow-y-auto ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
@@ -183,6 +183,27 @@ export function MobileNav({ categories = [] }: MobileNavProps) {
         </nav>
 
         <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col gap-3">
+          <Link
+            href="/gio-hang"
+            onClick={() => setIsOpen(false)}
+            className="w-full flex items-center justify-center gap-2 border border-[#0c5c36] text-[#0c5c36] hover:bg-emerald-50 font-semibold py-2.5 rounded-lg text-sm transition-colors"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
+            <span>Xem giỏ hàng</span>
+          </Link>
+
           <Link
             href="/contact"
             onClick={() => setIsOpen(false)}

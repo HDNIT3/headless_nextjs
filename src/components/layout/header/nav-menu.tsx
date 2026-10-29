@@ -14,6 +14,7 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
   { label: 'Trang chủ', href: '/' },
   { label: 'Về chúng tôi', href: '/ve-chung-toi' },
   { label: 'Sản phẩm', href: '/san-pham' },
+  { label: 'Mã giảm giá', href: '/ma-giam-gia' },
   { label: 'Dịch vụ', href: '/dich-vu' },
   { label: 'Tin tức', href: '/blog' },
   { label: 'Hình ảnh', href: '/hinh-anh' },
@@ -31,7 +32,6 @@ export function NavMenu({ categories = [] }: NavMenuProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -52,7 +52,6 @@ export function NavMenu({ categories = [] }: NavMenuProps) {
           (item.href === '/blog' && (pathname.startsWith('/blog') || pathname === '/')) ||
           (isProductMenu && isProductActive);
 
-        // Menu "Sản phẩm" with Dropdown Categories
         if (isProductMenu && categories.length > 0) {
           return (
             <div

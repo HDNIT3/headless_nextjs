@@ -15,7 +15,7 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <article className="group bg-white rounded-2xl border border-gray-100/90 shadow-[0_4px_22px_-4px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_30px_-6px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 p-3.5 flex flex-col h-full">
-      {/* Featured Image */}
+      {}
       <Link
         href={`/blog/${post.slug}`}
         transitionTypes={['nav-forward']}

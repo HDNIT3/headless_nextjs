@@ -28,6 +28,11 @@ export const GET_PRODUCTS_QUERY = `
         }
 
         ... on Product {
+          price
+          regularPrice
+          salePrice
+          productSizes
+          productColors
           productCategories {
             nodes {
               name
@@ -65,6 +70,11 @@ export const GET_PRODUCT_DETAIL_QUERY = `
       }
 
       ... on Product {
+        price
+        regularPrice
+        salePrice
+        productSizes
+        productColors
         galleryImages {
           nodes {
             id

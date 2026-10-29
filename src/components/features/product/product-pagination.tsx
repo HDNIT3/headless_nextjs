@@ -39,7 +39,6 @@ export function ProductPagination({
     });
   };
 
-  // Generate page numbers to show
   const pageNumbers: number[] = [];
   const maxVisible = 5;
   let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
@@ -53,12 +52,12 @@ export function ProductPagination({
 
   return (
     <nav className="flex items-center justify-center gap-1.5 mt-10 flex-wrap" aria-label="Phân trang">
-      {/* Page info */}
+      {}
       <span className="text-[13px] text-gray-500 mr-2">
         Trang {currentPage}/{totalPages}
       </span>
 
-      {/* Page number buttons */}
+      {}
       {pageNumbers.map((page) => (
         <button
           key={page}

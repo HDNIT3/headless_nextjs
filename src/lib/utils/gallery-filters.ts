@@ -19,7 +19,6 @@ function firstValue(value: RawGallerySearchParam): string | null {
   return slug || null;
 }
 
-/** Normalises the URL search params into the gallery filter state. */
 export function parseGalleryFilters(
   params: GallerySearchParams
 ): GalleryFilters {
@@ -28,7 +27,6 @@ export function parseGalleryFilters(
   };
 }
 
-/** Resolves a slug against the real terms so invalid URLs fall back to "all". */
 export function resolveGalleryTerm(
   terms: GalleryTerm[],
   slug: string | null

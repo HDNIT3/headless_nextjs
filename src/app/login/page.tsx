@@ -8,11 +8,19 @@ export const metadata: Metadata = {
   description: 'Đăng nhập tài khoản để xem chi tiết bài viết và kiến thức chuyên sâu.',
 };
 
-export default function LoginPage() {
+interface LoginPageProps {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  if (searchParams) {
+    await searchParams;
+  }
+
   return (
     <PageTransition>
       <div className="relative min-h-[calc(100vh-80px)] bg-slate-50/60 flex items-center justify-center py-12 px-4 sm:px-6 overflow-hidden">
-        {/* Decorative Blur Blobs & Grid Pattern */}
+        {}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.4]"
           style={{
@@ -21,13 +29,13 @@ export default function LoginPage() {
           }}
         />
 
-        {/* Quầng sáng Xanh lá (#0f5c2e) ở góc trên bên trái */}
+        {}
         <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-[#0f5c2e]/15 blur-3xl pointer-events-none" />
 
-        {/* Quầng sáng Cam (#f26522) ở góc dưới bên phải */}
+        {}
         <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-[#f26522]/15 blur-3xl pointer-events-none" />
 
-        {/* Quầng sáng phụ trung tâm tăng chiều sâu */}
+        {}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none" />
 
         <div className="relative z-10 w-full flex justify-center">

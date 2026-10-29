@@ -5,10 +5,6 @@ import {
 } from '@/service/product.service';
 import { ProductSidebarFilter } from './product-sidebar-filter';
 
-/**
- * Async sidebar slice: categories/attributes stream independently from the
- * product grid.
- */
 export async function ProductSidebarData({
   filterKey,
 }: {

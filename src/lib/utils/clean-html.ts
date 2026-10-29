@@ -1,8 +1,10 @@
+export { formatMediaUrl, replaceMediaUrlsInHtml } from './media';
+
 export function cleanHtml(html?: string | null): string {
   if (!html) return '';
 
   return html
-    .replace(/<[^>]*>/g, '') // remove HTML tags
+    .replace(/<[^>]*>/g, '')
     .replace(/&hellip;/g, '...')
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')

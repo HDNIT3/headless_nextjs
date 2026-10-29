@@ -7,10 +7,6 @@ interface NewsListDataProps {
   subtitle?: string;
 }
 
-/**
- * Server component that owns the news fetch. Pages render it inside Suspense
- * so the hero/banner can stream immediately.
- */
 export async function NewsListData({
   first = 10,
   title,

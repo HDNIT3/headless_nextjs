@@ -13,7 +13,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <article className="group bg-white rounded-xl border border-gray-100 shadow-[0_1px_6px_rgba(0,0,0,0.04)] hover:shadow-[0_6px_20px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 transition-all duration-300 p-2.5 flex flex-col h-full">
-      {/* Product Image */}
+      {}
       <Link
         href={`/san-pham/${product.slug}`}
         transitionTypes={['nav-forward']}
@@ -52,7 +52,6 @@ export function ProductCard({ product }: ProductCardProps) {
             </svg>
             {luotMua.toLocaleString('vi-VN')} lượt mua
           </span>
-
 
         {/* CTA Button */}
         <div className="mt-auto pt-2.5">

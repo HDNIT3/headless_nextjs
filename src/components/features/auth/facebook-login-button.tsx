@@ -30,7 +30,6 @@ export function FacebookLoginButton({ redirectUrl = '/', onError }: FacebookLogi
     fallbackMessage: 'Lỗi kết nối máy chủ khi đăng nhập Facebook.',
     onError,
   });
-  // Khởi tạo từ window để trường hợp SDK đã tải sẵn (điều hướng client-side quay lại trang) không bị "kẹt" disabled
   const [sdkReady, setSdkReady] = useState(() => typeof window !== 'undefined' && Boolean(window.FB));
   const appId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || '';
 
@@ -78,7 +77,6 @@ export function FacebookLoginButton({ redirectUrl = '/', onError }: FacebookLogi
       (response) => {
         const token = response.authResponse?.accessToken;
         if (!token) {
-          // Người dùng hủy popup hoặc không đồng ý cấp quyền
           setLoading(false);
           return;
         }

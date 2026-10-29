@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PageTransition } from '@/components/common/page-transition';
+import { LazySection } from '@/components/common/lazy-section';
 import { ProductDetailInfo } from '@/components/features/product/product-detail-info';
 import { ProductDetailTabs } from '@/components/features/product/product-detail-tabs';
 import { ProductGallery } from '@/components/features/product/product-gallery';
@@ -12,6 +13,9 @@ import { getProductSpecs } from '@/lib/utils/product';
 interface ProductDetailPageProps {
   params: Promise<{ slug: string }>;
 }
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -116,16 +120,29 @@ export default async function ProductDetailPage({
             <ProductDetailInfo product={product} />
           </div>
 
-          {/* Detail tabs */}
+          {/* Detail tabs - Lazy load khi người dùng cuộn xuống */}
           <div className="mt-10 lg:mt-12">
-            <ProductDetailTabs
-              key={product.id}
-              name={product.name}
-              specs={specs}
-              congDung={info?.congdung}
-              applicationsHtml={info?.ungdungchitiet}
-              whyHtml={info?.visaonensudung}
-            />
+            <LazySection
+              minHeight="240px"
+              rootMargin="150px"
+              fallback={
+                <div className="space-y-4">
+                  <div className="h-10 w-full max-w-md rounded bg-gray-200 animate-pulse" />
+                  <div className="h-4 w-full rounded bg-gray-100 animate-pulse" />
+                  <div className="h-4 w-11/12 rounded bg-gray-100 animate-pulse" />
+                  <div className="h-4 w-10/12 rounded bg-gray-100 animate-pulse" />
+                </div>
+              }
+            >
+              <ProductDetailTabs
+                key={product.id}
+                name={product.name}
+                specs={specs}
+                congDung={info?.congdung}
+                applicationsHtml={info?.ungdungchitiet}
+                whyHtml={info?.visaonensudung}
+              />
+            </LazySection>
           </div>
         </div>
       </div>

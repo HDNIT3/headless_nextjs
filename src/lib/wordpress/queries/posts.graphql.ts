@@ -7,6 +7,13 @@ export const GET_POST_DETAIL_QUERY = `
       excerpt
       content
       date
+      categories {
+        nodes {
+          id
+          name
+          slug
+        }
+      }
       featuredImage {
         node {
           sourceUrl
@@ -31,6 +38,13 @@ export const GET_NEWS_LIST_QUERY = `
         excerpt
         content
         date
+        categories {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
         featuredImage {
           node {
             sourceUrl

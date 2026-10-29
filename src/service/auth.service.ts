@@ -12,30 +12,29 @@ export type ActionResult =
   | { success: true; message: string; redirectTo: string }
   | { success: false; message: string };
 
-/** Thông tin dự phòng khi WordPress không trả về đủ trường của user. */
 interface UserFallback {
   name?: string;
   username?: string;
   email?: string;
 }
 
-/** Kết quả trao đổi thông tin xác thực với WordPress. */
 type CredentialsResult =
   | { ok: true; session: UserSession }
   | { ok: false; message: string };
 
 interface CredentialsOptions {
-  /** Dùng khi WordPress trả về lỗi nghiệp vụ (sai mật khẩu, email đã tồn tại...). */
   failureMessage: string;
-  /** Dùng khi không gọi được WordPress (sai URL, mất mạng, server sập...). */
   connectionMessage: string;
   fallbackUser?: UserFallback;
 }
 
-/** Tiền tố các endpoint xác thực do plugin WordPress cung cấp. */
 const WORDPRESS_AUTH_ENDPOINT = '/wp-json/custom-auth/v1';
 
 function getWordPressBaseUrl(): string {
+  if (process.env.WORDPRESS_URL) {
+    return process.env.WORDPRESS_URL.replace(/\/+$/, '');
+  }
+
   const wpGraphqlUrl =
     process.env.WORDPRESS_API_URL ||
     process.env.NEXT_PUBLIC_WORDPRESS_API_URL ||
@@ -44,10 +43,6 @@ function getWordPressBaseUrl(): string {
   return wpGraphqlUrl.replace(/\/graphql\/?$/i, '').replace(/\/+$/, '');
 }
 
-/**
- * Chỉ chấp nhận đường dẫn nội bộ.
- * Chặn cả `http(s)://...`, `//evil.com` (protocol-relative -> đổi domain) và `/\evil.com`.
- */
 function safeRedirect(target: string | null | undefined): string {
   if (!target) return '/';
   if (!target.startsWith('/')) return '/';
@@ -55,14 +50,12 @@ function safeRedirect(target: string | null | undefined): string {
   return target;
 }
 
-/** WordPress trả về WP_Error dạng `{ code, message }`; loại bỏ HTML nếu có. */
 function errorMessage(data: unknown, fallback: string): string {
   const message = (data as { message?: unknown } | null)?.message;
   if (typeof message !== 'string' || !message.trim()) return fallback;
   return message.replace(/<[^>]*>?/gm, '').trim() || fallback;
 }
 
-/** Chuẩn hoá dữ liệu user từ WordPress thành session. Trả về `null` nếu dữ liệu không hợp lệ. */
 function buildSession(userData: unknown, fallback: UserFallback = {}): UserSession | null {
   const user = userData as Record<string, unknown> | null;
   if (!user || typeof user.id !== 'number') return null;
@@ -85,10 +78,6 @@ function buildSession(userData: unknown, fallback: UserFallback = {}): UserSessi
   };
 }
 
-/**
- * Gửi thông tin xác thực tới WordPress và chuẩn hoá response thành session.
- * Dùng chung cho login / register / Google / Facebook.
- */
 async function exchangeCredentials(
   path: string,
   body: Record<string, unknown>,

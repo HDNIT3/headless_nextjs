@@ -13,7 +13,7 @@ export function HeroBanner({
 }: HeroBannerProps) {
   return (
     <section className="relative w-full overflow-hidden bg-[#124d27]">
-      {/* Background Banner Image */}
+      {}
       <div className="relative w-full h-[260px] sm:h-[320px] md:h-[380px] lg:h-[420px]">
         <Image
           src="/images/post/new_banner.png"
@@ -24,10 +24,10 @@ export function HeroBanner({
           className="object-cover object-right"
         />
 
-        {/* Gradient Overlay for Mobile & Left Content Readability */}
+        {}
         <div className="absolute inset-0 bg-gradient-to-r from-[#0d4520]/95 via-[#0d4520]/80 sm:via-[#0d4520]/60 to-transparent" />
 
-        {/* Content Container */}
+        {}
         <div className="relative h-full max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12 flex flex-col justify-center">
           <div className="max-w-2xl text-white">
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[36px] font-extrabold uppercase leading-[1.25] tracking-wide text-white drop-shadow-xs">

@@ -9,7 +9,15 @@ export const metadata: Metadata = {
     'Liên hệ ngay với Bao Bì Đức Trọng để nhận tư vấn và báo giá các giải pháp bao bì nông sản chất lượng cao, giá tốt nhất.',
 };
 
-export default function ContactPage() {
+interface ContactPageProps {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  if (searchParams) {
+    await searchParams;
+  }
+
   return (
     <PageTransition>
       <div className="relative min-h-[calc(100vh-80px)] w-full overflow-hidden bg-[#f7faf8]">

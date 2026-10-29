@@ -2,10 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getCurrentUser } from '@/service/auth.service';
 
-/**
- * Auth controls are rendered in their own Suspense boundary so reading the
- * session cookie never blocks the rest of the header.
- */
 export async function HeaderUser() {
   const user = await getCurrentUser();
 

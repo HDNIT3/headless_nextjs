@@ -13,7 +13,6 @@ interface ProductGalleryProps {
 }
 
 export function ProductGallery({ product }: ProductGalleryProps) {
-  // Ảnh chính (image) và ảnh gallery là hai nguồn riêng biệt.
   const galleryImages = product.galleryImages?.nodes ?? [];
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 

@@ -8,7 +8,15 @@ export const metadata: Metadata = {
   description: 'Đăng ký tài khoản mới để nhận thông tin và xem chi tiết bài viết.',
 };
 
-export default function RegisterPage() {
+interface RegisterPageProps {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function RegisterPage({ searchParams }: RegisterPageProps) {
+  if (searchParams) {
+    await searchParams;
+  }
+
   return (
     <PageTransition>
       <div className="min-h-[calc(100vh-80px)] bg-gradient-to-b from-gray-50/80 to-white flex items-center justify-center py-12 px-4 sm:px-6">

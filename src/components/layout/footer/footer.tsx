@@ -5,11 +5,11 @@ export function Footer() {
   return (
     <footer className="mt-auto bg-[#f3f9f5] border-t border-[#e3efe7] text-[#334155]">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-10 sm:pb-12">
-        {/* Top Header: Logo & Social Media Icons */}
+        {}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 pb-6">
-          {/* Brand Logo */}
+          {}
           <Link href="/" className="inline-flex items-center gap-3.5 group">
-            {/* Cropped emblem from site_icon.png */}
+            {}
             <div className="relative w-[52px] h-[52px] overflow-hidden flex-shrink-0">
               <Image
                 src="/icons/site_icon.png"
@@ -31,9 +31,9 @@ export function Footer() {
             </div>
           </Link>
 
-          {/* Social Icons */}
+          {}
           <div className="flex items-center gap-3.5">
-            {/* Facebook */}
+            {}
             <a
               href="https://facebook.com"
               target="_blank"
@@ -46,7 +46,7 @@ export function Footer() {
               </svg>
             </a>
 
-            {/* YouTube */}
+            {}
             <a
               href="https://youtube.com"
               target="_blank"
@@ -59,7 +59,7 @@ export function Footer() {
               </svg>
             </a>
 
-            {/* Zalo */}
+            {}
             <a
               href="https://zalo.me/0986124330"
               target="_blank"
@@ -70,7 +70,7 @@ export function Footer() {
               Zalo
             </a>
 
-            {/* Twitter */}
+            {}
             <a
               href="https://twitter.com"
               target="_blank"
@@ -85,19 +85,19 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Golden / Amber Divider Line */}
+        {}
         <div className="w-full h-px bg-[#d8a86a]/70 my-5 sm:my-6" />
 
-        {/* Main Content Columns */}
+        {}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-10 pt-2">
-          {/* Column 1: THÔNG TIN LIÊN HỆ */}
+          {}
           <div className="md:col-span-5 flex flex-col justify-between">
             <div>
               <h3 className="text-sm sm:text-[15px] font-bold text-[#c2651b] uppercase tracking-wide mb-4">
                 THÔNG TIN LIÊN HỆ
               </h3>
               <ul className="space-y-3.5 text-xs sm:text-[13px] text-[#334155]">
-                {/* Address */}
+                {}
                 <li className="flex items-start gap-2.5">
                   <svg
                     className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-gray-800 flex-shrink-0 mt-0.5"
@@ -116,7 +116,7 @@ export function Footer() {
                   </span>
                 </li>
 
-                {/* Phone */}
+                {}
                 <li className="flex items-center gap-2.5">
                   <svg
                     className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-gray-800 flex-shrink-0"
@@ -137,7 +137,7 @@ export function Footer() {
                   </a>
                 </li>
 
-                {/* Email / Website */}
+                {}
                 <li className="flex items-center gap-2.5">
                   <svg
                     className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-gray-800 flex-shrink-0"
@@ -163,13 +163,13 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Copyright */}
+            {}
             <div className="mt-8 text-[11px] sm:text-xs text-gray-500 leading-relaxed">
               Copyright @ 2026 Bao Bì Đức Trọng. All rights reserved. Design by HomeNest.Software
             </div>
           </div>
 
-          {/* Column 2: THÔNG TIN CHÍNH SÁCH */}
+          {}
           <div className="md:col-span-3">
             <h3 className="text-sm sm:text-[15px] font-bold text-[#c2651b] uppercase tracking-wide mb-4">
               THÔNG TIN CHÍNH SÁCH
@@ -218,7 +218,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Google Map */}
+          {}
           <div className="md:col-span-4">
             <div className="w-full h-[185px] sm:h-[195px] rounded-lg overflow-hidden border border-gray-200/90 shadow-xs bg-gray-100">
               <iframe

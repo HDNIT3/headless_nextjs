@@ -15,6 +15,7 @@ import {
   GetProductAttrMauSacsResponse,
   AttributeNode,
 } from "@/types/product";
+import { REVALIDATE_TIME } from "@/lib/constants/cache";
 
 export async function getProducts(
   variables: GetProductsVariables = { first: 12 }
@@ -22,7 +23,7 @@ export async function getProducts(
   const data = await fetchGraphQL<GetProductsResponse>(
     GET_PRODUCTS_QUERY,
     variables,
-    { revalidate: 60, tags: ['products'] }
+    { revalidate: false }
   );
 
   if (data?.products?.nodes?.length) {
@@ -47,7 +48,7 @@ export const getProductDetail = cache(
     const data = await fetchGraphQL<GetProductDetailResponse>(
       GET_PRODUCT_DETAIL_QUERY,
       { slug },
-      { revalidate: 60, tags: ['products', `product-${slug}`] }
+      { revalidate: false }
     );
 
     return data?.product ?? null;
@@ -58,7 +59,7 @@ export async function getProductAttrKichThuocs(): Promise<AttributeNode[]> {
   const data = await fetchGraphQL<GetProductAttrKichThuocsResponse>(
     GET_PRODUCT_ATTR_KICH_THUOCS_QUERY,
     {},
-    { revalidate: 120, tags: ['product-attr-kich-thuocs'] }
+    { revalidate: false }
   );
 
   return data?.productAttrKichThuocs?.nodes || [];
@@ -68,7 +69,7 @@ export async function getProductAttrMauSacs(): Promise<AttributeNode[]> {
   const data = await fetchGraphQL<GetProductAttrMauSacsResponse>(
     GET_PRODUCT_ATTR_MAU_SACS_QUERY,
     {},
-    { revalidate: 120, tags: ['product-attr-mau-sacs'] }
+    { revalidate: false }
   );
 
   return data?.productAttrMauSacs?.nodes || [];

@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 import type { SendMailOptions } from 'nodemailer';
 
-
 export const GMAIL_CONFIG = {
   user: process.env.GMAIL_USER || 'ungthithuyhuong1978@gmail.com',
   pass: process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || '',
@@ -23,7 +22,6 @@ export interface ContactEmailPayload {
     contentType?: string;
   } | null;
 }
-
 
 export function getMailTransporter() {
   const user = GMAIL_CONFIG.user?.trim();
@@ -56,14 +54,12 @@ export async function sendContactEmail(payload: ContactEmailPayload) {
 
   const transporter = getMailTransporter();
 
-  // Tạo định dạng ngày giờ gửi
   const sentTime = new Intl.DateTimeFormat('vi-VN', {
     dateStyle: 'full',
     timeStyle: 'medium',
     timeZone: 'Asia/Ho_Chi_Minh',
   }).format(new Date());
 
-  // HTML template email chuyên nghiệp với thương hiệu Bao Bì Đức Trọng
   const htmlContent = `
     <!DOCTYPE html>
     <html lang="vi">

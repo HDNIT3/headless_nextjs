@@ -17,7 +17,7 @@ export function NewsListSection({
   return (
     <section className="w-full bg-[#fafbfc] py-12 sm:py-16">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0c5c36] uppercase tracking-wide">
             {title}
@@ -27,7 +27,7 @@ export function NewsListSection({
           </p>
         </div>
 
-        {/* Posts Grid */}
+        {}
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 items-stretch">
             {posts.map((post) => (
@@ -42,7 +42,7 @@ export function NewsListSection({
           </div>
         )}
 
-        {/* Optional Pagination / Load More if hasNextPage */}
+        {}
         {postsData.pageInfo?.hasNextPage && (
           <div className="mt-12 text-center">
             <button

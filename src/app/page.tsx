@@ -11,7 +11,15 @@ export const metadata: Metadata = {
     'Nơi chia sẻ các hoạt động, sự kiện và câu chuyện thực tế trong quá trình đồng hành cùng doanh nghiệp và nông sản Việt.',
 };
 
-export default function HomePage() {
+interface HomePageProps {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  if (searchParams) {
+    await searchParams;
+  }
+
   return (
     <PageTransition>
       <div className="w-full flex flex-col">

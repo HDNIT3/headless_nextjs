@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     } | null = null;
 
     if (file && file.size > 0 && typeof file.arrayBuffer === 'function') {
-      const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
+      const MAX_FILE_SIZE = 15 * 1024 * 1024; 
       if (file.size > MAX_FILE_SIZE) {
         return NextResponse.json(
           { success: false, error: 'Tệp đính kèm không được vượt quá 15MB.' },

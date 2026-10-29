@@ -10,10 +10,6 @@ interface RouteErrorProps {
   description?: string;
 }
 
-/**
- * Shared UI for route-level error boundaries. Next.js 16 exposes `retry()`
- * (instead of the older `reset()`) so the segment is re-fetched and re-rendered.
- */
 export function RouteError({
   error,
   retry,

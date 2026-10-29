@@ -1,8 +1,13 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/header/header';
 import { Footer } from '@/components/layout/footer/footer';
+import { ViewTransitionHandler } from '@/components/common/view-transition-handler';
+import { RouteProgressBar } from '@/components/common/route-progress-bar';
+import { CartProvider } from '@/lib/cart/cart-context';
+import { CartToast } from '@/components/features/cart/cart-toast';
 
 const inter = Inter({
   subsets: ['latin', 'vietnamese'],
@@ -27,9 +32,16 @@ export default function RootLayout({
   return (
     <html lang="vi" className={inter.variable}>
       <body className="min-h-screen flex flex-col font-sans bg-white text-gray-800 antialiased selection:bg-[#0c5c36]/15 selection:text-[#0c5c36]">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <CartProvider>
+          <Suspense fallback={null}>
+            <RouteProgressBar />
+          </Suspense>
+          <ViewTransitionHandler />
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <CartToast />
+        </CartProvider>
       </body>
     </html>
   );

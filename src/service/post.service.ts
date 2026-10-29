@@ -10,6 +10,7 @@ import {
   GetPostDetailResponse,
   PostNode,
 } from '@/types/post';
+import { REVALIDATE_TIME } from '@/lib/constants/cache';
 
 export async function getNewsList(
   variables: GetNewsListVariables = { first: 10 }
@@ -17,7 +18,7 @@ export async function getNewsList(
   const data = await fetchGraphQL<GetNewsListResponse>(
     GET_NEWS_LIST_QUERY,
     { first: variables.first, after: variables.after },
-    { revalidate: 60, tags: ['posts'] }
+    { revalidate: REVALIDATE_TIME.POSTS, tags: ['posts'] }
   );
 
   if (data?.posts?.nodes?.length) {
@@ -35,16 +36,12 @@ export async function getNewsList(
   };
 }
 
-/**
- * Fetches a single post by slug. `cache` de-duplicates the call between
- * `generateMetadata` and the page render.
- */
 export const getPostDetail = cache(
   async (slug: string): Promise<PostNode | null> => {
     const data = await fetchGraphQL<GetPostDetailResponse>(
       GET_POST_DETAIL_QUERY,
       { slug },
-      { revalidate: 60, tags: ['posts', `post-${slug}`] }
+      { revalidate: REVALIDATE_TIME.POSTS, tags: ['posts', `post-${slug}`] }
     );
 
     return data?.post ?? null;

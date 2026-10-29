@@ -1,12 +1,5 @@
 import type { FeaturedImage } from './common';
 
-/**
- * Term of the `phan-loai-anh` taxonomy.
- *
- * WPGraphQL exposes this custom taxonomy through Vietnamese-derived GraphQL
- * names, so the field names in the query file look unusual. The rest of the
- * app only sees this clean type.
- */
 export interface GalleryTerm {
   databaseId: number;
   name: string;
@@ -21,7 +14,6 @@ export interface GalleryItem {
   date?: string | null;
   uri?: string | null;
   featuredImage?: FeaturedImage | null;
-  /** Taxonomy connection returned by WPGraphQL for `phan-loai-anh`. */
   phNLoINh?: {
     nodes: GalleryTerm[];
   } | null;

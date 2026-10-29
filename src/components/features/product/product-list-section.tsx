@@ -25,7 +25,7 @@ export function ProductListSection({
 }: ProductListSectionProps) {
   return (
     <div className="flex-1 min-w-0">
-      {/* Breadcrumb */}
+      {}
       <div className="mb-1">
         <nav className="text-[13px] text-gray-500" aria-label="Breadcrumb">
           <Link href="/san-pham" className="text-[#0c5c36] hover:underline font-medium">
@@ -40,12 +40,12 @@ export function ProductListSection({
         </nav>
       </div>
 
-      {/* Section Title */}
+      {}
       <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900 uppercase tracking-wide mb-5">
         Chi tiết các sản phẩm
       </h2>
 
-      {/* Product Grid — 4 columns on large screens */}
+      {}
       {products.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
@@ -68,7 +68,7 @@ export function ProductListSection({
         </div>
       )}
 
-      {/* Pagination */}
+      {}
       <ProductPagination
         currentPage={currentPage}
         totalPages={totalPages}

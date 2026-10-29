@@ -24,7 +24,6 @@ export function ProductShareButton({ title }: ProductShareButtonProps) {
         await navigator.share({ title, url });
         return;
       } catch {
-        // Người dùng huỷ chia sẻ hoặc trình duyệt không hỗ trợ.
       }
     }
 
@@ -32,7 +31,6 @@ export function ProductShareButton({ title }: ProductShareButtonProps) {
       await navigator.clipboard.writeText(url);
       setCopied(true);
     } catch {
-      // Bỏ qua nếu trình duyệt chặn clipboard.
     }
   };
 

@@ -28,7 +28,6 @@ function toArray(value: RawSearchParam): string[] {
   return Array.isArray(value) ? value : [value];
 }
 
-/** Normalises the URL search params into a typed filter object. */
 export function parseProductFilters(params: ProductSearchParams): ProductFilters {
   return {
     page: Math.max(1, Number(params.page) || 1),
@@ -39,7 +38,6 @@ export function parseProductFilters(params: ProductSearchParams): ProductFilters
   };
 }
 
-/** Builds the Relay-style cursor used by WPGraphQL for offset pagination. */
 export function getPageCursor(page: number, perPage = ITEMS_PER_PAGE): string | null {
   if (page <= 1) return null;
   const offset = (page - 1) * perPage - 1;
@@ -75,12 +73,6 @@ function matchesAttributes(
   );
 }
 
-/**
- * Applies the filter state to the current page of products.
- *
- * WPGraphQL only filters by search; category and attribute filters are applied
- * here so the UI matches the URL exactly.
- */
 export function filterProducts(
   products: ProductNode[],
   filters: ProductFilters

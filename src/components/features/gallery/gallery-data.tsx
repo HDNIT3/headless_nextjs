@@ -9,10 +9,6 @@ interface GalleryDataProps {
   activeSlug: string | null;
 }
 
-/**
- * Server component that owns the gallery fetch. It is rendered inside a
- * Suspense boundary so the hero can stream immediately.
- */
 export async function GalleryData({ activeSlug }: GalleryDataProps) {
   const { items, terms } = await getGalleryData();
   const activeTerm = resolveGalleryTerm(terms, activeSlug);

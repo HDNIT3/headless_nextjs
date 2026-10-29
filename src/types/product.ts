@@ -10,6 +10,11 @@ export interface ProductNode {
   databaseId?: number;
   name: string;
   slug: string;
+  price?: string | null;
+  regularPrice?: string | null;
+  salePrice?: string | null;
+  productSizes?: string[] | null;
+  productColors?: string[] | null;
   image?: {
     sourceUrl: string;
     altText?: string | null;

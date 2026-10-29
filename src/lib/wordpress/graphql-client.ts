@@ -1,10 +1,16 @@
+import { DEFAULT_REVALIDATE } from '@/lib/constants/cache';
+
+const WP_BASE_URL =
+  process.env.WORDPRESS_URL ||
+  (process.env.WORDPRESS_API_URL || process.env.NEXT_PUBLIC_WORDPRESS_API_URL)?.replace(/\/graphql\/?$/i, '') ||
+  'http://localhost/prj';
+
 const WP_GRAPHQL_URL =
   process.env.WORDPRESS_API_URL ||
   process.env.NEXT_PUBLIC_WORDPRESS_API_URL ||
-  'https://demo.wpgraphql.com/graphql';
+  `${WP_BASE_URL.replace(/\/+$/, '')}/graphql`;
 
 interface GraphQLRequestOptions {
-  /** `false` opts out of the Next.js data cache; a number sets the revalidation window. */
   revalidate?: number | false;
   tags?: string[];
 }
@@ -14,24 +20,17 @@ interface GraphQLResponse<T> {
   errors?: unknown;
 }
 
-/**
- * Small WPGraphQL client used by the service layer.
- *
- * Requests are cached by Next.js (default: 60s) and can be tagged for
- * on-demand revalidation. Pass `revalidate: false` for data that must always
- * be fresh.
- */
 export async function fetchGraphQL<T>(
   query: string,
   variables: object = {},
   options: GraphQLRequestOptions = {}
 ): Promise<T | null> {
-  const { revalidate = 60, tags } = options;
+  const { revalidate = DEFAULT_REVALIDATE, tags } = options;
 
   const cacheOptions: RequestInit & {
     next?: { revalidate?: number; tags?: string[] };
   } =
-    revalidate === false
+    revalidate === false || revalidate === 0
       ? { cache: 'no-store' }
       : { next: { revalidate, tags } };
 

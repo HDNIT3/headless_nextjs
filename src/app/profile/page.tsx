@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { PageTransition } from '@/components/common/page-transition';
 import { getCurrentUser, logoutAction } from '@/service/auth.service';
+import { getUserOrdersAction } from '@/service/checkout.service';
 
 export const metadata: Metadata = {
   title: 'Hồ sơ người dùng | Bao Bì Đức Trọng',
@@ -16,6 +17,8 @@ export default async function ProfilePage() {
   if (!user) {
     redirect('/login?redirect=/profile');
   }
+
+  const orders = await getUserOrdersAction(user.id);
 
   const joinDate = user.loginTime
     ? new Date(user.loginTime).toLocaleDateString('vi-VN', {
@@ -31,7 +34,7 @@ export default async function ProfilePage() {
     <PageTransition>
       <div className="w-full bg-[#fafbfc] min-h-[calc(100vh-80px)] py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        {/* Breadcrumb */}
+        {}
         <nav className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mb-8">
           <Link href="/" className="hover:text-[#0c5c36]">
             Trang chủ
@@ -40,9 +43,9 @@ export default async function ProfilePage() {
           <span className="text-gray-900 font-medium">Hồ sơ cá nhân</span>
         </nav>
 
-        {/* Profile Card */}
+        {}
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-          {/* Header Banner */}
+          {}
           <div className="h-36 sm:h-44 bg-gradient-to-r from-[#0c5c36] via-[#107042] to-[#f15a24] relative">
             <div className="absolute -bottom-12 left-6 sm:left-10 flex items-end gap-4">
               <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-1 shadow-md border border-gray-100 overflow-hidden">
@@ -64,7 +67,7 @@ export default async function ProfilePage() {
             </div>
           </div>
 
-          {/* User Details */}
+          {}
           <div className="pt-16 p-6 sm:p-10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
               <div>
@@ -76,7 +79,7 @@ export default async function ProfilePage() {
                 </p>
               </div>
 
-              {/* Logout button */}
+              {}
               <form action={logoutAction}>
                 <button
                   type="submit"
@@ -101,7 +104,7 @@ export default async function ProfilePage() {
               </form>
             </div>
 
-            {/* Information Grid */}
+            {}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
               <div className="p-5 rounded-2xl bg-gray-50/70 border border-gray-100">
                 <span className="text-xs uppercase font-bold tracking-wider text-gray-400">
@@ -143,6 +146,99 @@ export default async function ProfilePage() {
                   </span>
                 </div>
               </div>
+            </div>
+
+            {}
+            <div className="mt-10 pt-8 border-t border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-extrabold text-gray-900">
+                  Lịch sử đơn hàng của tôi ({orders.length})
+                </h2>
+                <Link
+                  href="/gio-hang"
+                  className="text-xs sm:text-sm font-semibold text-[#0c5c36] hover:underline"
+                >
+                  Xem giỏ hàng →
+                </Link>
+              </div>
+
+              {orders.length === 0 ? (
+                <div className="rounded-2xl border border-gray-100 bg-gray-50/60 p-6 text-center">
+                  <p className="text-sm text-gray-500">
+                    Bạn chưa có đơn hàng nào được lưu trong tài khoản.
+                  </p>
+                  <Link
+                    href="/san-pham"
+                    className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-[#0c5c36] hover:underline"
+                  >
+                    Khám phá và đặt mua sản phẩm ngay →
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {orders.map((order) => (
+                    <div
+                      key={order.order_id}
+                      className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-xs transition-all hover:border-emerald-300"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-gray-100">
+                        <div className="flex items-center gap-3">
+                          <span className="font-extrabold text-gray-900 text-sm sm:text-base">
+                            Đơn hàng #{order.order_number || order.order_id}
+                          </span>
+                          <span
+                            className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
+                              order.status === 'completed'
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : order.status === 'processing'
+                                ? 'bg-blue-100 text-blue-800'
+                                : order.status === 'on-hold'
+                                ? 'bg-amber-100 text-amber-800'
+                                : 'bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            {order.status_label || order.status}
+                          </span>
+                        </div>
+                        <span className="text-xs text-gray-400">
+                          {order.date_created}
+                        </span>
+                      </div>
+
+                      <div className="py-3 space-y-2">
+                        {order.items.map((item) => (
+                          <div
+                            key={item.id}
+                            className="flex items-center justify-between text-xs sm:text-sm"
+                          >
+                            <span className="text-gray-700">
+                              {item.name}{' '}
+                              <span className="text-gray-400">
+                                x{item.quantity} {item.size ? `(${item.size})` : ''}
+                              </span>
+                            </span>
+                            <span className="font-semibold text-gray-900">
+                              {new Intl.NumberFormat('vi-VN').format(item.total)}đ
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <span className="text-gray-500">
+                          Phương thức: <strong>{order.payment_method}</strong>
+                        </span>
+                        <div className="text-right">
+                          <span className="text-gray-500 mr-2">Tổng tiền:</span>
+                          <span className="text-base font-extrabold text-[#0c5c36]">
+                            {new Intl.NumberFormat('vi-VN').format(order.total)}đ
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Quick Actions */}

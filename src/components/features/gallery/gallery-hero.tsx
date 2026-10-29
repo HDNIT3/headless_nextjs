@@ -1,9 +1,5 @@
 import Image from 'next/image';
 
-/**
- * Hero shared by the gallery page. The image lives locally so the banner keeps
- * working even when WordPress is temporarily unavailable.
- */
 export function GalleryHero() {
   return (
     <section className="relative w-full overflow-hidden bg-[#124d27]">

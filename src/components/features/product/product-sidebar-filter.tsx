@@ -19,7 +19,6 @@ export function ProductSidebarFilter({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Current filter state from URL
   const currentSearch = searchParams.get('search') || '';
   const currentCategories = searchParams.getAll('danhmuc');
   const currentKichThuocs = searchParams.getAll('kichthuoc');
@@ -64,7 +63,7 @@ export function ProductSidebarFilter({
 
   return (
     <aside className="w-full lg:w-[300px] shrink-0 space-y-5">
-      {/* Search Box */}
+      {}
       <form onSubmit={handleSearchSubmit} className="relative">
         <input
           type="text"
@@ -85,7 +84,7 @@ export function ProductSidebarFilter({
         </button>
       </form>
 
-      {/* Filter Panel */}
+      {}
       <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-xs">
         <div className="flex items-center gap-2 mb-5">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600">
@@ -102,7 +101,7 @@ export function ProductSidebarFilter({
           <h3 className="font-bold text-[15px] text-gray-800 uppercase">Bộ lọc tìm kiếm</h3>
         </div>
 
-        {/* Category Filter */}
+        {}
         {categories.length > 0 && (
           <FilterSection title="Danh mục sản phẩm">
             {categories.map((cat) => (
@@ -116,7 +115,7 @@ export function ProductSidebarFilter({
           </FilterSection>
         )}
 
-        {/* Kích thước Filter */}
+        {}
         {kichThuocs.length > 0 && (
           <FilterSection title="Kích thước sản phẩm">
             {kichThuocs.map((kt) => (
@@ -130,7 +129,7 @@ export function ProductSidebarFilter({
           </FilterSection>
         )}
 
-        {/* Màu sắc Filter */}
+        {}
         {mauSacs.length > 0 && (
           <FilterSection title="Màu sắc sản phẩm">
             {mauSacs.map((ms) => (
@@ -144,7 +143,7 @@ export function ProductSidebarFilter({
           </FilterSection>
         )}
 
-        {/* Action Buttons */}
+        {}
         <div className="mt-6 flex flex-col gap-2.5">
           <button
             type="button"
@@ -165,8 +164,6 @@ export function ProductSidebarFilter({
     </aside>
   );
 }
-
-/* Sub-components */
 
 function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (

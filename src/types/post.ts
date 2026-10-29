@@ -1,5 +1,11 @@
 import { FeaturedImage, PageInfo } from './common';
 
+export interface PostCategoryNode {
+  id: string;
+  name: string;
+  slug: string;
+}
+
 export interface PostNode {
   databaseId: number;
   slug: string;
@@ -8,6 +14,9 @@ export interface PostNode {
   content?: string | null;
   date: string;
   featuredImage?: FeaturedImage | null;
+  categories?: {
+    nodes: PostCategoryNode[];
+  } | null;
 }
 
 export interface PostsConnection {

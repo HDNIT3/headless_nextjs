@@ -11,14 +11,22 @@ export const metadata: Metadata = {
     'Nơi chia sẻ các hoạt động, sự kiện và câu chuyện thực tế trong quá trình đồng hành cùng doanh nghiệp và nông sản Việt.',
 };
 
-export default function BlogPage() {
+interface BlogPageProps {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  if (searchParams) {
+    await searchParams;
+  }
+
   return (
     <PageTransition>
       <div className="w-full flex flex-col">
-        {/* Hero Banner with matching image and typography */}
+        {}
         <HeroBanner />
 
-        {/* Main News List Section */}
+        {}
         <Suspense fallback={<NewsListSkeleton />}>
           <NewsListData />
         </Suspense>
